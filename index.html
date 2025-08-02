@@ -2,44 +2,97 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Para mi primita 💖</title>
+  <title>Primita 💖</title>
   <style>
     body {
       margin: 0;
-      padding: 0;
-      background: linear-gradient(to right, #ffe6f0, #ffeaea);
-      font-family: 'Segoe UI', sans-serif;
-      text-align: center;
-      height: 100vh;
+      background: black;
+      color: #00ffcc;
+      font-family: 'Courier New', monospace;
       overflow: hidden;
     }
 
-    h1 {
-      color: #d63384;
-      font-size: 3em;
-      margin-top: 30vh;
-      animation: aparecer 2s ease-in-out;
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
     }
 
-    .corazon {
-      color: #ff5e8e;
-      font-size: 2em;
-      animation: flotar 3s infinite;
+    .texto {
       position: absolute;
-    }
-
-    @keyframes aparecer {
-      from { opacity: 0; transform: translateY(-30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes flotar {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(-15px); }
-      100% { transform: translateY(0); }
+      top: 30%;
+      width: 100%;
+      text-align: center;
+      font-size: 2.5em;
+      z-index: 1;
+      white-space: nowrap;
+      text-shadow: 0 0 10px #00ffff;
     }
   </style>
 </head>
 <body>
-  <h1>Primita, te quiero 💖
-    
+  <canvas id="matrix"></canvas>
+  <div class="texto" id="mensaje"></div>
+
+  <script>
+    // Efecto matrix
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    let letters = Array(256).join("1").split("");
+    const draw = () => {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#0F0";
+      letters.map((y_pos, index) => {
+        let text = String.fromCharCode(3e4 + Math.random() * 33);
+        let x = index * 10;
+        ctx.fillText(text, x, y_pos);
+        letters[index] = y_pos > canvas.height + Math.random() * 1e4 ? 0 : y_pos + 10;
+      });
+    };
+    setInterval(draw, 33);
+
+    // Texto tipo máquina de escribir
+    const frases = [
+      "Primita",
+      "La mejor ❤️‍🩹"
+    ];
+
+    let i = 0;
+    let j = 0;
+    let current = "";
+    let isDeleting = false;
+
+    function escribir() {
+      const div = document.getElementById("mensaje");
+      if (i < frases.length) {
+        if (!isDeleting) {
+          current = frases[i].substring(0, j++);
+          div.innerHTML = current;
+          if (j > frases[i].length) {
+            isDeleting = true;
+            setTimeout(escribir, 1000);
+            return;
+          }
+        } else {
+          current = frases[i].substring(0, j--);
+          div.innerHTML = current;
+          if (j < 0) {
+            isDeleting = false;
+            i++;
+            setTimeout(escribir, 300);
+            return;
+          }
+        }
+        setTimeout(escribir, 100);
+      }
+    }
+
+    escribir();
+  </script>
+</body>
+</html>
