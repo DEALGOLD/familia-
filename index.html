@@ -1,115 +1,95 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Primita</title>
+  <meta charset="UTF-8" />
+  <title>Primita 💖</title>
   <style>
     body {
-      margin: 0; padding: 0;
-      background: #000;
+      margin: 0;
       overflow: hidden;
-      font-family: 'Courier New', monospace;
+      background: black;
+      font-family: monospace;
     }
 
     canvas {
-      position: fixed; top: 0; left: 0;
-      z-index: 0;
-    }
-    .texto {
-      position: absolute;
-      top: 30%;
-      width: 100%;
-      text-align: center;
-      font-size: 2.5em;
+      position: fixed;
+      top: 0;
+      left: 0;
       z-index: 1;
-      white-space: nowrap;
-      color: #ff77cc;
-      text-shadow: 0 0 8px #ff99dd;
+    }
+
+    .mensaje {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: hotpink;
+      font-size: 48px;
+      font-weight: bold;
+      text-align: center;
+      z-index: 2;
+      text-shadow: 0 0 15px pink, 0 0 30px magenta;
+    }
+
+    .mensaje span {
+      display: block;
+      font-size: 28px;
+      margin-top: 10px;
+      color: white;
+      text-shadow: 0 0 10px hotpink;
     }
   </style>
 </head>
 <body>
-  <canvas id="matrix"></canvas>
-  <div class="texto" id="mensaje"></div>
+  <canvas id="canvas"></canvas>
+  <div class="mensaje">
+    Primita
+    <span>La mejor ❤️‍🩹</span>
+  </div>
+
+  <!-- Audio de fondo -->
+  <audio id="bgmusic" autoplay loop>
+    <source src="https://dl.sndup.net/5f4f/I%20Love%20You%20So%20-%20The%20Walters.mp3" type="audio/mp3">
+    Tu navegador no soporta audio.
+  </audio>
 
   <script>
-    const canvas = document.getElementById('matrix');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
     canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
 
-    const cols = canvas.width / 10;
-    let drops = Array(Math.floor(cols)).fill(0);
+    const letters = Array(256).join("Te amo ").split("");
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
 
-    function drawMatrix() {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+    const drops = [];
+    for (let x = 0; x < columns; x++) drops[x] = 1;
+
+    function draw() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#ff77cc';
-      ctx.font = '15px monospace';
+
+      ctx.fillStyle = "#ff69b4";
+      ctx.font = fontSize + "px monospace";
 
       for (let i = 0; i < drops.length; i++) {
-        const text = String.fromCharCode(0x30A0 + Math.random() * 96);
-        const x = i * 10;
-        const y = drops[i] * 15;
-        ctx.fillText(text, x, y);
+        const text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
 
-        if (y > canvas.height && Math.random() > 0.98) {
-          drops[i] = 0;
-          // efecto explosión
-          explode(x, y);
-        }
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+
         drops[i]++;
       }
     }
 
-    function explode(x, y) {
-      const count = 20;
-      for (let i = 0; i < count; i++) {
-        setTimeout(() => {
-          ctx.fillStyle = '#ff99dd';
-          ctx.font = '16px monospace';
-          const dx = (Math.random() - 0.5) * 50;
-          const dy = (Math.random() - 0.5) * 50;
-          ctx.fillText('♫', x + dx, y + dy);
-        }, i * 20);
-      }
-    }
+    setInterval(draw, 35);
 
-    setInterval(drawMatrix, 50);
-
-    const frases = ["Primita", "La mejor ❤️‍🩹"];
-    let i = 0, j = 0, current = "", deleting = false;
-
-    function typeWriter() {
-      const el = document.getElementById('mensaje');
-      if (i < frases.length) {
-        if (!deleting) {
-          current = frases[i].substring(0, j++);
-          el.innerHTML = current;
-          if (j > frases[i].length) {
-            deleting = true;
-            setTimeout(typeWriter, 1000);
-            return;
-          }
-        } else {
-          current = frases[i].substring(0, j--);
-          el.innerHTML = current;
-          if (j < 0) {
-            deleting = false;
-            i++;
-            setTimeout(typeWriter, 300);
-            return;
-          }
-        }
-        setTimeout(typeWriter, 100);
-      }
-    }
-
-    typeWriter();
-    window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      drops = Array(Math.floor(canvas.width / 10)).fill(0);
+    // Intenta reproducir al tocar la pantalla
+    document.body.addEventListener('click', () => {
+      const audio = document.getElementById('bgmusic');
+      if (audio.paused) audio.play();
     });
   </script>
 </body>
