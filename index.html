@@ -1,85 +1,45 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Te amo Aylen ❤️</title>
+  <meta charset="UTF-8">
+  <title>Para mi primita 💖</title>
   <style>
     body {
       margin: 0;
-      background: black;
+      padding: 0;
+      background: linear-gradient(to right, #ffe6f0, #ffeaea);
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      height: 100vh;
       overflow: hidden;
-      font-family: 'Courier New', Courier, monospace;
     }
 
-    canvas {
-      display: block;
+    h1 {
+      color: #d63384;
+      font-size: 3em;
+      margin-top: 30vh;
+      animation: aparecer 2s ease-in-out;
     }
 
-    #mensaje {
+    .corazon {
+      color: #ff5e8e;
+      font-size: 2em;
+      animation: flotar 3s infinite;
       position: absolute;
-      top: 40%;
-      width: 100%;
-      text-align: center;
-      color: hotpink;
-      font-size: 50px;
-      font-weight: bold;
-      text-shadow: 0 0 15px hotpink;
     }
 
-    #nombre {
-      position: absolute;
-      top: 55%;
-      width: 100%;
-      text-align: center;
-      color: pink;
-      font-size: 30px;
-      font-weight: bold;
-      text-shadow: 0 0 10px pink;
+    @keyframes aparecer {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes flotar {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+      100% { transform: translateY(0); }
     }
   </style>
 </head>
 <body>
-  <canvas id="canvas"></canvas>
-  <div id="mensaje">Te amo</div>
-  <div id="nombre">Aylen ❤️</div>
-
-  <script>
-    const canvas = document.getElementById("canvas");
-    const ctx = canvas.getContext("2d");
-
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
-
-    const letters = Array(256).join(" Te amo ").split("");
-    let drops = [];
-
-    for (let i = 0; i < canvas.width / 10; i++) {
-      drops[i] = 1;
-    }
-
-    function draw() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#ff69b4";
-      ctx.font = "15px monospace";
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillText(text, i * 10, drops[i] * 20);
-        if (drops[i] * 20 > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
-      }
-    }
-
-    setInterval(draw, 50);
-
-    window.addEventListener("resize", () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
-  </script>
-</body>
-</html>
+  <h1>Primita, te quiero 💖
+    
