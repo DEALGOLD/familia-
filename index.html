@@ -1,52 +1,61 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Mamá 💖</title>
+  <meta charset="UTF-8">
+  <title>Mamá Hacker</title>
   <style>
     body {
+      background-color: black;
+      color: #00FF00;
+      font-family: 'Courier New', monospace;
+      font-size: 24px;
       margin: 0;
+      padding: 20px;
       overflow: hidden;
-      background: black;
-      font-family: monospace;
     }
 
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 1;
+    #mensaje {
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid #00FF00;
+      width: 0;
+      animation: escribir 4s steps(30, end) forwards, parpadeo 0.7s step-end infinite alternate;
     }
 
-    .mensaje {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: hotpink;
-      font-size: 48px;
-      font-weight: bold;
-      text-align: center;
-      z-index: 2;
-      text-shadow: 0 0 15px pink, 0 0 30px magenta;
+    @keyframes escribir {
+      from { width: 0 }
+      to { width: 24ch }
     }
 
-    .extra {
-      display: none;
-      margin-top: 20px;
-      font-size: 30px;
-      color: white;
-      text-shadow: 0 0 10px hotpink;
+    @keyframes parpadeo {
+      from, to { border-color: transparent }
+      50% { border-color: #00FF00 }
+    }
+
+    #instruccion {
+      margin-top: 30px;
+      color: #00cc00;
+      font-size: 18px;
     }
   </style>
 </head>
-<body>
-  <canvas id="canvas"></canvas>
-  <div class="mensaje" id="mensaje">
-    Mamá
-    <div class="extra" id="extra">La mejor ❤️‍🩹</div>
-  </div>
+<body onclick="activarMusica()">
 
-  <!-- Música de fondo -->
-  <audio id="bgmusic" autoplay loop>
-    <source src="https://
+  <div id="mensaje">mamá te amo ❤️‍🩹</div>
+  <div id="instruccion">(toca para activar la música)</div>
+
+  <!-- Música -->
+  <audio id="bgmusic" loop>
+    <source src="https://dl.sndup.net/5f4f/I%20Love%20You%20So%20-%20The%20Walters.mp3" type="audio/mp3">
+    Tu navegador no soporta audio.
+  </audio>
+
+  <script>
+    function activarMusica() {
+      const music = document.getElementById("bgmusic");
+      music.play();
+      document.getElementById("instruccion").style.display = "none";
+    }
+  </script>
+</body>
+</html>
