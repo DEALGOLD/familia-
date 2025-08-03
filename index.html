@@ -2,60 +2,81 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Mamá Hacker</title>
+  <title>Mamá te amo</title>
   <style>
     body {
-      background-color: black;
-      color: #00FF00;
-      font-family: 'Courier New', monospace;
-      font-size: 24px;
       margin: 0;
-      padding: 20px;
       overflow: hidden;
+      background: black;
     }
 
-    #mensaje {
-      white-space: nowrap;
-      overflow: hidden;
-      border-right: 2px solid #00FF00;
-      width: 0;
-      animation: escribir 4s steps(30, end) forwards, parpadeo 0.7s step-end infinite alternate;
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
     }
 
-    @keyframes escribir {
-      from { width: 0 }
-      to { width: 24ch }
+    .mensaje {
+      position: absolute;
+      top: 30%;
+      width: 100%;
+      text-align: center;
+      font-size: 48px;
+      font-weight: bold;
+      color: #ff69b4;
+      text-shadow: 0 0 10px #ff69b4, 0 0 20px hotpink;
+      z-index: 1;
+      animation: caer 3s ease-in-out forwards;
     }
 
-    @keyframes parpadeo {
-      from, to { border-color: transparent }
-      50% { border-color: #00FF00 }
-    }
-
-    #instruccion {
-      margin-top: 30px;
-      color: #00cc00;
-      font-size: 18px;
+    @keyframes caer {
+      0% {
+        transform: translateY(-200px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0px);
+        opacity: 1;
+      }
     }
   </style>
 </head>
-<body onclick="activarMusica()">
-
-  <div id="mensaje">mamá te amo ❤️‍🩹</div>
-  <div id="instruccion">(toca para activar la música)</div>
-
-  <!-- Música -->
-  <audio id="bgmusic" loop>
-    <source src="https://dl.sndup.net/5f4f/I%20Love%20You%20So%20-%20The%20Walters.mp3" type="audio/mp3">
-    Tu navegador no soporta audio.
-  </audio>
+<body>
+  <canvas id="matrix"></canvas>
+  <div class="mensaje">mamá te amo ❤️‍🩹</div>
 
   <script>
-    function activarMusica() {
-      const music = document.getElementById("bgmusic");
-      music.play();
-      document.getElementById("instruccion").style.display = "none";
+    // Efecto matrix rosa
+    const canvas = document.getElementById("matrix");
+    const ctx = canvas.getContext("2d");
+
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    const letters = "010101💖💕💗💘".split("");
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+
+    const drops = [];
+    for (let x = 0; x < columns; x++) drops[x] = 1;
+
+    function draw() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "#ff69b4";
+      ctx.font = fontSize + "px monospace";
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
     }
+
+    setInterval(draw, 35);
   </script>
 </body>
 </html>
