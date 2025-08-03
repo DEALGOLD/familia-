@@ -1,82 +1,80 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Mamá te amo</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Carta en llamas</title>
   <style>
     body {
       margin: 0;
-      overflow: hidden;
+      padding: 0;
       background: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: 'Courier New', monospace;
     }
 
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 0;
+    .carta {
+      position: relative;
+      background: white;
+      padding: 30px;
+      width: 300px;
+      height: auto;
+      line-height: 1.6;
+      border-radius: 5px;
+      z-index: 2;
+      box-shadow: 0 0 30px rgba(255, 0, 0, 0.2);
+      transition: opacity 1s ease-out;
     }
 
-    .mensaje {
+    .fuego {
       position: absolute;
-      top: 30%;
+      top: -50px;
+      left: 0;
       width: 100%;
-      text-align: center;
-      font-size: 48px;
-      font-weight: bold;
-      color: #ff69b4;
-      text-shadow: 0 0 10px #ff69b4, 0 0 20px hotpink;
-      z-index: 1;
-      animation: caer 3s ease-in-out forwards;
+      height: 100%;
+      background: radial-gradient(ellipse at center, rgba(255,140,0,0.4) 0%, transparent 80%);
+      pointer-events: none;
+      mix-blend-mode: screen;
+      animation: fuego 5s linear forwards;
     }
 
-    @keyframes caer {
+    @keyframes fuego {
       0% {
-        transform: translateY(-200px);
-        opacity: 0;
+        clip-path: inset(0% 0% 0% 0%);
       }
       100% {
-        transform: translateY(0px);
-        opacity: 1;
+        clip-path: inset(100% 0% 0% 0%);
       }
     }
   </style>
 </head>
 <body>
-  <canvas id="matrix"></canvas>
-  <div class="mensaje">mamá te amo ❤️‍🩹</div>
 
-  <script>
-    // Efecto matrix rosa
-    const canvas = document.getElementById("matrix");
-    const ctx = canvas.getContext("2d");
+<div class="carta" id="carta">
+  <div class="fuego"></div>
+  <h3>PARA EL AMOR DE MI VIDA:</h3>
+  <p>
+    Si pudiera elegir un lugar seguro, sería a tu lado. Cuanto más tiempo estoy contigo, más te amo.
+    Hay personas que cambian tu día… tú cambiaste mi vida.
+    Tú no llegaste a completar mi historia… llegaste a escribir la más bonita.
+  </p>
+</div>
 
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
+<!-- SONIDO DE FUEGO -->
+<audio id="audioFuego" autoplay loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_efa5cb103f.mp3?filename=fireplace-burning-10948.mp3" type="audio/mp3">
+  Tu navegador no soporta audio.
+</audio>
 
-    const letters = "010101💖💕💗💘".split("");
-    const fontSize = 14;
-    const columns = canvas.width / fontSize;
+<script>
+  // Desvanece la carta después de 5 segundos
+  setTimeout(() => {
+    document.getElementById('carta').style.opacity = 0;
+  }, 5000);
+</script>
 
-    const drops = [];
-    for (let x = 0; x < columns; x++) drops[x] = 1;
-
-    function draw() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = "#ff69b4";
-      ctx.font = fontSize + "px monospace";
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-        drops[i]++;
-      }
-    }
-
-    setInterval(draw, 35);
-  </script>
 </body>
 </html>
