@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Primita 💖</title>
+  <title>Mamá 💖</title>
   <style>
     body {
       margin: 0;
@@ -31,10 +31,10 @@
       text-shadow: 0 0 15px pink, 0 0 30px magenta;
     }
 
-    .mensaje span {
-      display: block;
-      font-size: 28px;
-      margin-top: 10px;
+    .extra {
+      display: none;
+      margin-top: 20px;
+      font-size: 30px;
       color: white;
       text-shadow: 0 0 10px hotpink;
     }
@@ -42,55 +42,11 @@
 </head>
 <body>
   <canvas id="canvas"></canvas>
-  <div class="mensaje">
-    Primita
-    <span>La mejor ❤️‍🩹</span>
+  <div class="mensaje" id="mensaje">
+    Mamá
+    <div class="extra" id="extra">La mejor ❤️‍🩹</div>
   </div>
 
-  <!-- Audio de fondo -->
+  <!-- Música de fondo -->
   <audio id="bgmusic" autoplay loop>
-    <source src="https://dl.sndup.net/5f4f/I%20Love%20You%20So%20-%20The%20Walters.mp3" type="audio/mp3">
-    Tu navegador no soporta audio.
-  </audio>
-
-  <script>
-    const canvas = document.getElementById("canvas");
-    const ctx = canvas.getContext("2d");
-
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
-
-    const letters = Array(256).join("Te amo ").split("");
-    const fontSize = 14;
-    const columns = canvas.width / fontSize;
-
-    const drops = [];
-    for (let x = 0; x < columns; x++) drops[x] = 1;
-
-    function draw() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = "#ff69b4";
-      ctx.font = fontSize + "px monospace";
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-
-        drops[i]++;
-      }
-    }
-
-    setInterval(draw, 35);
-
-    // Intenta reproducir al tocar la pantalla
-    document.body.addEventListener('click', () => {
-      const audio = document.getElementById('bgmusic');
-      if (audio.paused) audio.play();
-    });
-  </script>
-</body>
-</html>
+    <source src="https://
