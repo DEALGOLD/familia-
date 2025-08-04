@@ -28,5 +28,59 @@
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    // Caracteres chinos estilo "
-    
+    // Caracteres chinos estilo "Matrix"
+    const symbols = "田由甲申电甩冂口囗囚四回因图".split("");
+
+    const fontSize = 16;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = Array(columns).fill(1);
+
+    // Datos de "SOFÍA"
+    const name = "SOFÍA".split("");
+    const nameStart = Math.floor((canvas.width / fontSize - name.length) / 2);
+    const nameDrops = name.map((letter, i) => ({
+      col: nameStart + i,
+      char: letter,
+      y: -Math.floor(Math.random() * 20)
+    }));
+
+    function draw() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "hotpink";
+      ctx.font = fontSize + "px monospace";
+
+      // Fondo de caracteres chinos
+      for (let i = 0; i < columns; i++) {
+        const char = symbols[Math.floor(Math.random() * symbols.length)];
+        const x = i * fontSize;
+        const y = drops[i] * fontSize;
+
+        ctx.fillText(char, x, y);
+
+        if (y > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+
+      // Letras "SOFÍA" cayendo en el centro
+      nameDrops.forEach((letterData) => {
+        const x = letterData.col * fontSize;
+        const y = letterData.y * fontSize;
+
+        if (y < canvas.height) {
+          ctx.fillStyle = "hotpink";
+          ctx.fillText(letterData.char, x, y);
+          letterData.y += 0.5;
+        } else {
+          letterData.y = -Math.floor(Math.random() * 20);
+        }
+      });
+    }
+
+    setInterval(draw, 50);
+  </script>
+</body>
+</html>
