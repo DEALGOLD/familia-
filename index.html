@@ -2,79 +2,73 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Carta en llamas</title>
+  <title>Hacking Sofía</title>
   <style>
-    body {
+    html, body {
       margin: 0;
       padding: 0;
+      overflow: hidden;
       background: black;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      font-family: 'Courier New', monospace;
-    }
-
-    .carta {
-      position: relative;
-      background: white;
-      padding: 30px;
-      width: 300px;
-      height: auto;
-      line-height: 1.6;
-      border-radius: 5px;
-      z-index: 2;
-      box-shadow: 0 0 30px rgba(255, 0, 0, 0.2);
-      transition: opacity 1s ease-out;
-    }
-
-    .fuego {
-      position: absolute;
-      top: -50px;
-      left: 0;
-      width: 100%;
       height: 100%;
-      background: radial-gradient(ellipse at center, rgba(255,140,0,0.4) 0%, transparent 80%);
-      pointer-events: none;
-      mix-blend-mode: screen;
-      animation: fuego 5s linear forwards;
+      font-family: monospace;
     }
 
-    @keyframes fuego {
-      0% {
-        clip-path: inset(0% 0% 0% 0%);
-      }
-      100% {
-        clip-path: inset(100% 0% 0% 0%);
-      }
+    canvas {
+      display: block;
+    }
+
+    #center-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: hotpink;
+      font-size: 4em;
+      font-weight: bold;
+      text-shadow: 0 0 20px hotpink;
+      z-index: 1;
     }
   </style>
 </head>
 <body>
+  <div id="center-text">Sofía</div>
+  <canvas id="matrixCanvas"></canvas>
 
-<div class="carta" id="carta">
-  <div class="fuego"></div>
-  <h3>PARA EL AMOR DE MI VIDA:</h3>
-  <p>
-    Si pudiera elegir un lugar seguro, sería a tu lado. Cuanto más tiempo estoy contigo, más te amo.
-    Hay personas que cambian tu día… tú cambiaste mi vida.
-    Tú no llegaste a completar mi historia… llegaste a escribir la más bonita.
-  </p>
-</div>
+  <script>
+    const canvas = document.getElementById('matrixCanvas');
+    const ctx = canvas.getContext('2d');
 
-<!-- SONIDO DE FUEGO -->
-<audio id="audioFuego" autoplay loop>
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_efa5cb103f.mp3?filename=fireplace-burning-10948.mp3" type="audio/mp3">
-  Tu navegador no soporta audio.
-</audio>
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
 
-<script>
-  // Desvanece la carta después de 5 segundos
-  setTimeout(() => {
-    document.getElementById('carta').style.opacity = 0;
-  }, 5000);
-</script>
+    const katakana = "アァイィウヴエェオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#$%&";
+    const symbols = katakana.split("");
 
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+
+    const drops = Array.from({ length: columns }).fill(1);
+
+    function draw() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "hotpink";
+      ctx.font = fontSize + "px monospace";
+
+      drops.forEach((y, i) => {
+        const text = symbols[Math.floor(Math.random() * symbols.length)];
+        const x = i * fontSize;
+        ctx.fillText(text, x, y * fontSize);
+
+        if (y * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      });
+    }
+
+    setInterval(draw, 50);
+  </script>
 </body>
-</html>
+</
