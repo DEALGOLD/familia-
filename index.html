@@ -12,72 +12,78 @@
       height: 100%;
       font-family: monospace;
     }
+
+    #sofia-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: hotpink;
+      font-size: 80px;
+      font-weight: bold;
+      text-shadow: 0 0 30px hotpink;
+      z-index: 2;
+      pointer-events: none;
+    }
+
     canvas {
       display: block;
+      z-index: 1;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    audio {
+      display: none;
     }
   </style>
 </head>
 <body>
+  <div id="sofia-text">Sofía</div>
   <canvas id="matrixCanvas"></canvas>
+  <audio autoplay loop>
+    <source src="https://cdn.pixabay.com/audio/2023/05/03/audio_8501a7850d.mp3" type="audio/mpeg">
+    Tu navegador no soporta audio.
+  </audio>
 
   <script>
     const canvas = document.getElementById("matrixCanvas");
     const ctx = canvas.getContext("2d");
 
-    // Ajustar tamaño del canvas
+    // Pantalla completa
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    // Caracteres chinos estilo "Matrix"
-    const symbols = "田由甲申电甩冂口囗囚四回因图".split("");
+    // Símbolos estilo chino/matrix
+    const symbols = "田由甲申电甩冂口囗囚四回因图水火风月光天地龙凤".split("");
 
-    const fontSize = 16;
+    const fontSize = 28; // SÍMBOLOS GRANDES
     const columns = Math.floor(canvas.width / fontSize);
     const drops = Array(columns).fill(1);
 
-    // Datos de "SOFÍA"
-    const name = "SOFÍA".split("");
-    const nameStart = Math.floor((canvas.width / fontSize - name.length) / 2);
-    const nameDrops = name.map((letter, i) => ({
-      col: nameStart + i,
-      char: letter,
-      y: -Math.floor(Math.random() * 20)
-    }));
-
     function draw() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      // Fondo negro con transparencia
+      ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       ctx.fillStyle = "hotpink";
       ctx.font = fontSize + "px monospace";
 
-      // Fondo de caracteres chinos
+      // Dibujar símbolos
       for (let i = 0; i < columns; i++) {
-        const char = symbols[Math.floor(Math.random() * symbols.length)];
+        const text = symbols[Math.floor(Math.random() * symbols.length)];
         const x = i * fontSize;
         const y = drops[i] * fontSize;
 
-        ctx.fillText(char, x, y);
+        ctx.fillText(text, x, y);
 
         if (y > canvas.height && Math.random() > 0.975) {
           drops[i] = 0;
         }
+
         drops[i]++;
       }
-
-      // Letras "SOFÍA" cayendo en el centro
-      nameDrops.forEach((letterData) => {
-        const x = letterData.col * fontSize;
-        const y = letterData.y * fontSize;
-
-        if (y < canvas.height) {
-          ctx.fillStyle = "hotpink";
-          ctx.fillText(letterData.char, x, y);
-          letterData.y += 0.5;
-        } else {
-          letterData.y = -Math.floor(Math.random() * 20);
-        }
-      });
     }
 
     setInterval(draw, 50);
