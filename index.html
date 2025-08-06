@@ -1,92 +1,43 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <title>Sofía Matrix</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      background: black;
-      height: 100%;
-      font-family: monospace;
-    }
+import os
+import random
+import time
 
-    #sofia-text {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: hotpink;
-      font-size: 80px;
-      font-weight: bold;
-      text-shadow: 0 0 30px hotpink;
-      z-index: 2;
-      pointer-events: none;
-    }
+# Caracteres estilo hacking
+symbols = "アカサタナハマヤラワ0123456789@#&$%"
 
-    canvas {
-      display: block;
-      z-index: 1;
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
+# Limpia la pantalla
+def clear():
+    os.system('clear')
 
-    audio {
-      display: none;
-    }
-  </style>
-</head>
-<body>
-  <div id="sofia-text">Sofía</div>
-  <canvas id="matrixCanvas"></canvas>
-  <audio autoplay loop>
-    <source src="https://cdn.pixabay.com/audio/2023/05/03/audio_8501a7850d.mp3" type="audio/mpeg">
-    Tu navegador no soporta audio.
-  </audio>
+# Colores ANSI (azul fuerte)
+BLUE = "\033[1;34m"
+RESET = "\033[0m"
 
-  <script>
-    const canvas = document.getElementById("matrixCanvas");
-    const ctx = canvas.getContext("2d");
+# Mostrar el texto en el centro
+def show_title():
+    print("\n" * 10)
+    print(BLUE + " " * 15 + "███████╗ █████╗ ███╗   ██╗████████╗██╗██╗")
+    print(" " * 15 + "██╔════╝██╔══██╗████╗  ██║╚══██╔══╝██║██║")
+    print(" " * 15 + "█████╗  ███████║██╔██╗ ██║   ██║   ██║██║")
+    print(" " * 15 + "██╔══╝  ██╔══██║██║╚██╗██║   ██║   ╚═╝╚═╝")
+    print(" " * 15 + "███████╗██║  ██║██║ ╚████║   ██║   ██╗██╗")
+    print(" " * 15 + "╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝   ╚═╝╚═╝" + RESET)
+    print("\n" * 2)
 
-    // Pantalla completa
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+# Animación de símbolos cayendo
+def rain():
+    cols = os.get_terminal_size().columns
+    while True:
+        line = ''.join(random.choice(symbols) for _ in range(cols))
+        print(BLUE + line + RESET)
+        time.sleep(0.05)
 
-    // Símbolos estilo chino/matrix
-    const symbols = "田由甲申电甩冂口囗囚四回因图水火风月光天地龙凤".split("");
-
-    const fontSize = 28; // SÍMBOLOS GRANDES
-    const columns = Math.floor(canvas.width / fontSize);
-    const drops = Array(columns).fill(1);
-
-    function draw() {
-      // Fondo negro con transparencia
-      ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = "hotpink";
-      ctx.font = fontSize + "px monospace";
-
-      // Dibujar símbolos
-      for (let i = 0; i < columns; i++) {
-        const text = symbols[Math.floor(Math.random() * symbols.length)];
-        const x = i * fontSize;
-        const y = drops[i] * fontSize;
-
-        ctx.fillText(text, x, y);
-
-        if (y > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-
-        drops[i]++;
-      }
-    }
-
-    setInterval(draw, 50);
-  </script>
-</body>
-</html>
+try:
+    clear()
+    show_title()
+    time.sleep(3)
+    while True:
+        rain()
+except KeyboardInterrupt:
+    clear()
+    print("Saliendo...")
